@@ -1,79 +1,193 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Firebase POC - React Native Android App
 
-# Getting Started
+A React Native proof-of-concept application demonstrating Firebase Analytics integration with manual initialization on Android.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## 🚀 Features
 
-## Step 1: Start the Metro Server
+- **Firebase Analytics Integration** - Manual initialization without dependency on `google-services.json`
+- **Real-time Analytics Status** - Visual indicator showing analytics collection state
+- **Custom Event Logging** - Test button to log custom Firebase events
+- **Event Counter** - Track total events sent to Firebase
+- **Cross-platform Ready** - Built with React Native (Android support implemented, iOS ready for future)
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 📱 Screenshots
 
-To start Metro, run the following command from the _root_ of your React Native project:
+The app displays:
+- Firebase Analytics status (ON/OFF indicator)
+- Test button to trigger custom events
+- Event counter showing total events sent
+- Real-time feedback on Firebase operations
 
+## 🛠️ Tech Stack
+
+- **React Native** - Cross-platform mobile development
+- **TypeScript** - Type-safe JavaScript
+- **Firebase Analytics** - User behavior tracking and analytics
+- **Android Native** - Manual Firebase initialization in Kotlin
+- **Gradle** - Build system for Android
+
+## 📋 Prerequisites
+
+- Node.js (v16 or higher)
+- React Native CLI
+- Android Studio with Android SDK
+- Java Development Kit (JDK)
+- Firebase project with Analytics enabled
+
+## 🔧 Installation
+
+### 1. Clone the repository
 ```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
+git clone <your-repo-url>
+cd FirebasePOC
 ```
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
+### 2. Install dependencies
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+npm install
+# or
+yarn install
 ```
 
-### For iOS
+### 3. Firebase Configuration
 
-```bash
-# using npm
-npm run ios
+Since this project uses manual Firebase initialization, you need to:
 
-# OR using Yarn
-yarn ios
+1. **Create a Firebase project** at [Firebase Console](https://console.firebase.google.com/)
+2. **Enable Analytics** in your Firebase project
+3. **Update Firebase configuration** in `android/app/src/main/java/com/countryfirebasepoc/MainApplication.kt`:
+
+```kotlin
+val firebaseOptions = FirebaseOptions.Builder()
+    .setProjectId("your-project-id")
+    .setApplicationId("your-application-id")
+    .setApiKey("your-api-key")
+    .setDatabaseUrl("your-database-url")
+    .setStorageBucket("your-storage-bucket")
+    .build()
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+### 4. Run the app
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+#### Android
+```bash
+# Start Metro bundler
+npx react-native start
 
-## Step 3: Modifying your App
+# In another terminal, run the app
+npx react-native run-android
+```
 
-Now that you have successfully run the app, let's modify it.
+## 🏗️ Project Structure
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+```
+FirebasePOC/
+├── android/                          # Android native code
+│   ├── app/
+│   │   └── src/main/java/
+│   │       └── com/countryfirebasepoc/
+│   │           └── MainApplication.kt  # Firebase initialization
+│   └── build.gradle                   # Android build configuration
+├── App.tsx                           # Main React Native component
+├── package.json                      # Node.js dependencies
+└── README.md                         # This file
+```
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+## 🔥 Firebase Implementation
 
-## Congratulations! :tada:
+### Manual Initialization
+This project demonstrates manual Firebase initialization in Android, avoiding dependency on `google-services.json`:
 
-You've successfully run and modified your React Native App. :partying_face:
+```kotlin
+// In MainApplication.kt
+val firebaseOptions = FirebaseOptions.Builder()
+    .setProjectId("your-project-id")
+    .setApplicationId("your-application-id")
+    .setApiKey("your-api-key")
+    .setDatabaseUrl("your-database-url")
+    .setStorageBucket("your-storage-bucket")
+    .build()
 
-### Now what?
+FirebaseApp.initializeApp(this, firebaseOptions)
+```
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+### React Native Integration
+Firebase Analytics is integrated in React Native using `@react-native-firebase/analytics`:
 
-# Troubleshooting
+```typescript
+import { getAnalytics, logEvent } from '@react-native-firebase/analytics';
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+const analytics = getAnalytics();
+analytics.setAnalyticsCollectionEnabled(true);
 
-# Learn More
+// Log custom events
+logEvent(analytics, 'test_button_click', {
+  button_id: 'main_test_button',
+  click_count: eventCount,
+  timestamp: new Date().toISOString(),
+});
+```
 
-To learn more about React Native, take a look at the following resources:
+## 📊 Analytics Events
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+The app logs the following events:
+
+- **`app_open`** - Automatically logged when app starts
+- **`test_button_click`** - Custom event with parameters:
+  - `button_id`: Button identifier
+  - `click_count`: Sequential click counter
+  - `timestamp`: Event timestamp
+
+## 🔍 Monitoring
+
+1. **Firebase Console** - View analytics data at [Firebase Console](https://console.firebase.google.com/)
+2. **Real-time Dashboard** - Monitor events as they occur
+3. **Analytics Reports** - Generate insights from collected data
+
+## 🚨 Troubleshooting
+
+### Build Issues
+- Ensure Android SDK and build tools are properly installed
+- Check that all dependencies are resolved
+- Verify Firebase configuration values are correct
+
+### Analytics Not Showing
+- Confirm Firebase project is properly configured
+- Check that Analytics is enabled in Firebase Console
+- Verify network connectivity
+- Wait a few minutes for data to appear in console
+
+### Common Errors
+- **Kotlin version conflicts**: Ensure Kotlin version compatibility
+- **Missing dependencies**: Run `./gradlew clean` and rebuild
+- **Firebase initialization failed**: Verify configuration values
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- React Native community for the excellent framework
+- Firebase team for comprehensive mobile analytics
+- Contributors and maintainers
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [troubleshooting section](#-troubleshooting)
+2. Search existing [issues](../../issues)
+3. Create a new issue with detailed information
+
+---
+
+**Note**: This is a proof-of-concept project. For production use, ensure proper security measures, error handling, and testing are implemented.
