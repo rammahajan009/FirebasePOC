@@ -37,35 +37,11 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    
-    setupFirebase()
-    
+    FirebaseApp.getInstance().delete()
     SoLoader.init(this, false)
     
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       load()
-    }
-  }
-  
-  private fun setupFirebase() {
-    try {
-      FirebaseApp.getInstance().delete()
-      
-      // Initialize Firebase with custom options
-      val firebaseOptions = FirebaseOptions.Builder()
-          .setProjectId("fir-india-e26e3")
-          .setApplicationId("1:541877482123:android:235b8cd0c423c432c35a8e")
-          .setApiKey("AIzaSyBgaGWfgkGXanYzVewOgpf-MXdcrd1Itck")
-          .setDatabaseUrl("https://fir-india-e26e3-default-rtdb.firebaseio.com")
-          .setStorageBucket("fir-india-e26e3.firebasestorage.app")
-          .build()
-      
-      if(FirebaseApp.getApps(this).isEmpty()) {
-        FirebaseApp.initializeApp(this, firebaseOptions)
-      }
-      
-    } catch (e: Exception) {
-      Log.e("FirebasePOC", "Error in setupFirebase: ${e.message}")
     }
   }
 }

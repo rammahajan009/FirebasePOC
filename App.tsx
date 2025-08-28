@@ -2,7 +2,7 @@
  * Simple Firebase POC App for Android
  */
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,8 +11,9 @@ import {
   View,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
-import {getAnalytics, logEvent} from '@react-native-firebase/analytics';
+import { firebase, getAnalytics, logEvent } from '@react-native-firebase/analytics';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -28,6 +29,44 @@ function App(): React.JSX.Element {
   };
 
   useEffect(() => {
+    if (firebase.apps.length === 0) {
+      initFirebase();
+    }
+    else {
+      enableAnalytics();
+    }
+  }, []);
+
+  const initFirebase = () => {
+    const config = Platform.select({
+      ios: {
+        apiKey: "AIzaSyDhSHCX9F0GceBFdsclshMWi4I9Qu6EGBA",
+        projectId: "fir-india-e26e3",
+        storageBucket: "fir-india-e26e3.firebasestorage.app",
+        messagingSenderId: "541877482123",
+        appId: "1:541877482123:ios:83d2d9a264df5b0fc35a8e",
+        databaseURL: "https://fir-india-e26e3-default-rtdb.firebaseio.com"
+      },
+      android: {
+        apiKey: "AIzaSyBgaGWfgkGXanYzVewOgpf-MXdcrd1Itck",
+        projectId: "fir-india-e26e3",
+        storageBucket: "fir-india-e26e3.firebasestorage.app",
+        messagingSenderId: "541877482123",
+        appId: "1:541877482123:android:235b8cd0c423c432c35a8e",
+        databaseURL: "https://fir-india-e26e3-default-rtdb.firebaseio.com"
+      },
+    });
+    if (config) {
+      firebase.initializeApp(config).then(() => {
+        console.log('Firebase initialized');
+        enableAnalytics();
+      }).catch(error => {
+        console.error('Error initializing Firebase:', error);
+      });
+    }
+  };
+
+  const enableAnalytics = () => {
     const analytics = getAnalytics();
     analytics.setAnalyticsCollectionEnabled(true).then(() => {
       console.log('Analytics collection enabled');
@@ -36,7 +75,7 @@ function App(): React.JSX.Element {
       console.error('Error enabling analytics collection:', error);
       setAnalyticsEnabled(false);
     });
-  }, []);
+  };
 
   const testFirebaseEvent = () => {
     const analytics = getAnalytics();
