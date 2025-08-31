@@ -1,0 +1,52 @@
+{
+  "name": "@your-org/firebase-service",
+  "version": "1.0.0",
+  "description": "A comprehensive, reusable Firebase service and configuration management package for React Native projects",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint . --ext .ts",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "firebase",
+    "react-native",
+    "analytics",
+    "configuration",
+    "typescript",
+    "mobile",
+    "ios",
+    "android"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/firebase-service.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/firebase-service/issues"
+  },
+  "homepage": "https://github.com/your-org/firebase-service#readme",
+  "peerDependencies": {
+    "@react-native-firebase/app": ">=22.0.0",
+    "@react-native-firebase/analytics": ">=22.0.0",
+    "react-native": ">=0.75.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.6",
+    "@types/react-native": "^0.75.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
